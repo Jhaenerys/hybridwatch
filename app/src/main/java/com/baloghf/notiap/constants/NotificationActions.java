@@ -16,7 +16,7 @@ public final class NotificationActions {
     // Incoming SMS
     public static final NotificationAction SMS = new NotificationAction("SMS", "com.google.android.apps.messaging", 6);
     // Battery notification
-    public static final NotificationAction BATTERY = new NotificationAction("Battery", "android.os.battery", 7);
+    public static final NotificationAction BATTERY = new NotificationAction("Battery", "com.android.systemui", 7, "low_battery");
 
 
     public static ArrayList<NotificationAction> createList() {

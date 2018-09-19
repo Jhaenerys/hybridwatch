@@ -29,6 +29,9 @@ public class NotificationReceiverService extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         int notificationCode = matchNotificationCode(sbn);
+        Log.v("Package: ", sbn.getPackageName());
+        Log.v("Key: ", sbn.getKey());
+        Log.v("Tag: ", sbn.getTag());
 
         Intent intent = new Intent("com.baloghf.simplenotificationlogger.Service.NotificationReceiverService");
         intent.putExtra("Notification Code", notificationCode);
@@ -38,11 +41,19 @@ public class NotificationReceiverService extends NotificationListenerService {
 
     private int matchNotificationCode(StatusBarNotification sbn) {
         String packageName = sbn.getPackageName();
+        String tag = sbn.getTag();
         int notificationCode = 0;
 
         for (NotificationAction application : NOTIFICATION_LIST) {
             if (packageName.equals(application.getPackageName())) {
-                notificationCode = application.getNotificationCode();
+                if (!packageName.equals("com.android.systemui") || tag.equals(application.getTag()))
+                {
+                    notificationCode = application.getNotificationCode();
+                }
+                else
+                {
+                    notificationCode = 0;
+                }
             }
         }
         return notificationCode;
