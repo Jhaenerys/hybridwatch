@@ -1,9 +1,9 @@
 <resources>
+    <!-- Application related strings -->
     <string name="app_name">NotiAp</string>
+    <string name="service_label">MyNotificationService</string>
 
-    <string name="service_label">NotiAp</string>
-
-    <!-- Strings related to the Alert Dialog -->
+    <!-- Alert Dialog related strings -->
     <string name="notification_listener_service">"Notification Listener Service"</string>
     <string name="notification_listener_service_explanation">"For the app to work you need to enable the Notification Listener Service. Enable it now?"</string>
     <string name="yes">Yes</string>

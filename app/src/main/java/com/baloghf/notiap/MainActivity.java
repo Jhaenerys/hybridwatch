@@ -1,6 +1,5 @@
 package com.baloghf.notiap;
 
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -16,20 +15,26 @@ import android.widget.TextView;
 
 import com.baloghf.notiap.constants.NotificationAction;
 import com.baloghf.notiap.constants.NotificationActions;
-import com.baloghf.notiap.service.NotificationReceiverService;
 import com.baloghf.notiap.service.PhoneCallService;
 
 import java.util.ArrayList;
 
+/**
+ * The main Activity.
+ */
 public class MainActivity extends AppCompatActivity {
+    // These are necessary for alerting the user to enable the Notification Listener for the application
     private static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
     private static final String ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
-    private AlertDialog enableNotificationListenerAlertDialog;
 
+    // List of the notifications we want to gather
     public static ArrayList<NotificationAction> NOTIFICATION_LIST = new ArrayList<>();
 
+    // The items on the main Activity tab
     private TextView tv1;
 
+    // This will receive the code of the notifications, which the services gathered
+    // Not used after BlueTooth implemented
     private NotificationBroadcastReceiver notificationBroadcastReceiver;
 
     @Override
@@ -37,27 +42,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // The items on the main Activity tab
+        tv1 = findViewById(R.id.textView);
+        tv1.setText("Empty");
+
+        // Fill up the notification list
         NOTIFICATION_LIST = NotificationActions.createList();
 
-        // If the user did not turn the notification listener service on we prompt him to do so
+        // If the user did not turn the notification listener service on we prompt him/her to do so
+        AlertDialog enableNotificationListenerAlertDialog;
         if (!isNotificationServiceEnabled()) {
             enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog();
             enableNotificationListenerAlertDialog.show();
         }
 
-        tv1 = findViewById(R.id.textView);
 
         // Start the PhoneCallService
-        Intent i = new Intent(MainActivity.this, PhoneCallService.class);
-        startService(i);
+        Intent phoneCallServiceIntent = new Intent(MainActivity.this, PhoneCallService.class);
+        startService(phoneCallServiceIntent);
 
-        // Finally we register a receiver to tell the MainActivity when a notification has been received
+        // Register the receiver to tell the MainActivity when a notification has been received
         notificationBroadcastReceiver = new NotificationBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.baloghf.simplenotificationlogger.Service.NotificationReceiverService");
+        intentFilter.addAction("baloghf.notificationservice");
         registerReceiver(notificationBroadcastReceiver, intentFilter);
-
-        tv1.setText("Empty");
     }
 
     @Override
@@ -66,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(notificationBroadcastReceiver);
     }
 
+    /**
+     * Basic class to gather the needed notifications
+     */
     public class NotificationBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -77,22 +88,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Is Notification Service Enabled.
-     * Verifies if the notification listener service is enabled.
-     * Got it from: https://github.com/kpbird/NotificationListenerService-Example/blob/master/NLSExample/src/main/java/com/kpbird/nlsexample/NLService.java
+     * Verifies if the Notification Listener Service is enabled for the application.
      *
-     * @return True if eanbled, false otherwise.
+     * @return <code>true</code> if enabled, <code>false</code> otherwise.
      */
     private boolean isNotificationServiceEnabled() {
-        String pkgName = getPackageName();
+        String packageName = getPackageName();
         final String flat = Settings.Secure.getString(getContentResolver(),
                 ENABLED_NOTIFICATION_LISTENERS);
         if (!TextUtils.isEmpty(flat)) {
             final String[] names = flat.split(":");
-            for (int i = 0; i < names.length; i++) {
-                final ComponentName cn = ComponentName.unflattenFromString(names[i]);
-                if (cn != null) {
-                    if (TextUtils.equals(pkgName, cn.getPackageName())) {
+            for (String name : names) {
+                final ComponentName componentName = ComponentName.unflattenFromString(name);
+                if (componentName != null) {
+                    if (TextUtils.equals(packageName, componentName.getPackageName())) {
                         return true;
                     }
                 }
@@ -102,11 +111,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Build Notification Listener Alert Dialog.
-     * Builds the alert dialog that pops up if the user has not turned
-     * the Notification Listener Service on yet.
+     * Builds the alert dialog that pops up if the user has not turned the Notification Listener Service on yet.
      *
-     * @return An alert dialog which leads to the notification enabling screen
+     * @return asn alert dialog which leads to the notification enabling screen
      */
     private AlertDialog buildNotificationServiceAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -121,12 +128,9 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton(R.string.no,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // If you choose to not enable the notification listener
-                        // the app will not work as expected
+                        // This should never happen
                     }
                 });
         return (alertDialogBuilder.create());
     }
 }
-
-

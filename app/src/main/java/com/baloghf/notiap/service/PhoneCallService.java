@@ -10,10 +10,12 @@ import android.util.Log;
 
 import com.baloghf.notiap.constants.NotificationActions;
 
+/**
+ * Service which will gather the needed phone call related notifications.
+ */
 public class PhoneCallService extends Service {
 
     private TelephonyManager telephonyManager;
-    private PhoneStateListener phoneStateListener;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -28,10 +30,16 @@ public class PhoneCallService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        phoneStateListener = new PhoneStateListener() {
+        PhoneStateListener phoneStateListener = new PhoneStateListener() {
+            /**
+             * Actions will happen when the call state changed
+             * @param state indicates the current state of the call
+             * @param incomingNumber the number of the caller
+             */
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
-                Intent intent = new Intent("com.baloghf.simplenotificationlogger.Service.NotificationReceiverService");
+                Intent intent = new Intent("baloghf.notificationservice");
+                // Checks what kind of state change happened
                 switch (state) {
                     case TelephonyManager.CALL_STATE_RINGING:
                         intent.putExtra("Notification Code", NotificationActions.CALL_RINGING.getNotificationCode());
@@ -47,8 +55,10 @@ public class PhoneCallService extends Service {
             }
         };
 
+        // Set up the Telephony Manager to listen to the changes of the call state
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 
+        // This will ensure, that the service will be restarted, if it happens to be closed
         return Service.START_STICKY;
     }
 }
