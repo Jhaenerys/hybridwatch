@@ -8,4 +8,8 @@
     <string name="notification_listener_service_explanation">"For the app to work you need to enable the Notification Listener Service. Enable it now?"</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <!-- Bluetooth related strings -->
+    <string name="bluetoot_not_on">"Bluetooth is not turned on!</string>
+    <string name="socket_creation_failed">"Socket creation failed"</string>
 </resources>

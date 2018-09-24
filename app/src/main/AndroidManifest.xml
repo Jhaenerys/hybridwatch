@@ -3,6 +3,8 @@
     package="com.baloghf.notiap">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -30,6 +32,10 @@
         </service>
         <service
             android:name=".service.PhoneCallService"
+            android:enabled="true">
+        </service>
+        <service
+            android:name=".service.BluetoothService"
             android:enabled="true">
         </service>
     </application>

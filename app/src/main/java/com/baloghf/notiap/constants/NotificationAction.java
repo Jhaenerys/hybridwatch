@@ -15,7 +15,7 @@ public final class NotificationAction {
     /**
      * The given notification code
      */
-    private int _notificationCode;
+    private String _notificationCode;
     /**
      * A given tag to the notification action
      * Can be used to distinguish between different notifications in the same package
@@ -29,7 +29,7 @@ public final class NotificationAction {
      * @param packageName      the name of the package of the notification action
      * @param notificationCode the chosen notification code
      */
-    NotificationAction(String name, String packageName, int notificationCode) {
+    NotificationAction(String name, String packageName, String notificationCode) {
         _name = name;
         _packageName = packageName;
         _notificationCode = notificationCode;
@@ -44,7 +44,7 @@ public final class NotificationAction {
      * @param notificationCode the chosen notification code
      * @param tag              the chosen tag
      */
-    NotificationAction(String name, String packageName, int notificationCode, String tag) {
+    NotificationAction(String name, String packageName, String notificationCode, String tag) {
         _name = name;
         _packageName = packageName;
         _notificationCode = notificationCode;
@@ -59,7 +59,7 @@ public final class NotificationAction {
         return _packageName;
     }
 
-    public int getNotificationCode() {
+    public String getNotificationCode() {
         return _notificationCode;
     }
 

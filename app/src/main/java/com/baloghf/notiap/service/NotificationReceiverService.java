@@ -39,7 +39,7 @@ public class NotificationReceiverService extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         // Translating the caught notification to a notification code
-        int notificationCode = matchNotificationCode(sbn);
+        String notificationCode = matchNotificationCode(sbn);
         Log.v("Package: ", sbn.getPackageName());
         Log.v("Extras: ", sbn.getNotification().extras.toString());
         Log.v("Sender", sbn.getNotification().extras.getString("android.title"));
@@ -57,10 +57,10 @@ public class NotificationReceiverService extends NotificationListenerService {
      * @param sbn the Status Bar Notification the code-matching will be based on
      * @return the correct notification code
      */
-    private int matchNotificationCode(StatusBarNotification sbn) {
+    private String matchNotificationCode(StatusBarNotification sbn) {
         String packageName = sbn.getPackageName();
         String tag = sbn.getTag();
-        int notificationCode = 0;
+        String notificationCode = "0";
 
         // Iterates through the list of notifications
         for (NotificationAction application : NOTIFICATION_LIST) {
@@ -74,7 +74,7 @@ public class NotificationReceiverService extends NotificationListenerService {
                         notificationCode = application.getNotificationCode();
                     }
                 } else {
-                    notificationCode = 0;
+                    notificationCode = "0";
                 }
             }
         }
