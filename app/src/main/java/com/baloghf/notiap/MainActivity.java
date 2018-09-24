@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
     public class NotificationBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            int receivedNotificationCode = intent.getIntExtra("Notification Code", -1);
-            if (receivedNotificationCode != 0) {
+            String receivedNotificationCode = intent.getStringExtra("Notification Code");
+            if (!receivedNotificationCode.equals("0")) {
                 notificationTextView.setText("ID: " + receivedNotificationCode);
             }
         }

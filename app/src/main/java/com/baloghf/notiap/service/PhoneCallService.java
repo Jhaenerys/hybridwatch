@@ -45,10 +45,10 @@ public class PhoneCallService extends Service {
                         intent.putExtra("Notification Code", NotificationActions.CALL_RINGING.getNotificationCode());
                         break;
                     case TelephonyManager.CALL_STATE_OFFHOOK:
-                        intent.putExtra("Notification Code", NotificationActions.CALL_OFFHOOK.getNotificationCode());
+                        intent.putExtra("Notification Code", NotificationActions.CALL_HAPPENING.getNotificationCode());
                         break;
                     default:
-                        intent.putExtra("Notification Code", 0);
+                        intent.putExtra("Notification Code", "0");
                 }
                 Log.v("Phony: ", "Code: " + state);
                 sendBroadcast(intent);

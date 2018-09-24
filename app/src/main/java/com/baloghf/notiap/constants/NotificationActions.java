@@ -15,7 +15,7 @@ public final class NotificationActions {
     // Incoming/declined call
     public static final NotificationAction CALL_RINGING = new NotificationAction("CallRinging", "", "4");
     // In call
-    public static final NotificationAction CALL_OFFHOOK = new NotificationAction("CallOffhook", "", "5");
+    public static final NotificationAction CALL_HAPPENING = new NotificationAction("CallHappening", "", "5");
     // Incoming SMS
     public static final NotificationAction SMS = new NotificationAction("SMS", "com.google.android.apps.messaging", "6");
     // Battery notification
@@ -34,7 +34,7 @@ public final class NotificationActions {
         list.add(MESSENGER);
         list.add(GMAIL);
         list.add(CALL_RINGING);
-        list.add(CALL_OFFHOOK);
+        list.add(CALL_HAPPENING);
         list.add(SMS);
         list.add(BATTERY);
         list.add(GF_MESSENGER);
